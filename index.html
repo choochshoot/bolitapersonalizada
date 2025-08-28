@@ -201,6 +201,36 @@
       transition: transform 0.5s, opacity 0.5s;
     }
 
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .website-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: #6fffff;
+      border: 1px solid #6fffff;
+      padding: 12px 25px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      letter-spacing: 1px;
+      box-shadow: 0 0 10px rgba(111, 255, 255, 0.3);
+    }
+
+    .website-button:hover {
+      background: rgba(111, 255, 255, 0.1);
+      box-shadow: 0 0 15px #6fffff;
+      transform: translateY(-2px);
+    }
+
     @media (max-width: 650px) {
       .content {
         flex-direction: column;
@@ -216,8 +246,8 @@
 <body>
   <div class="container">
     <header>
-      <h1>Personaliza la bolita</h1>
-      <p class="subtitle">Hola Cuitláhuac, algo asi pero para tus cuadros</p>
+      <h1>Hola Cuitlahuac, personaliza la bolita</h1>
+      <p class="subtitle">Asi para lo de tus cuadros😎</p>
     </header>
     
     <div class="content">
@@ -283,6 +313,12 @@
         <button class="reset-button" id="reset-button">Reset to Default</button>
       </div>
     </div>
+
+    <footer>
+      <a href="https://choochshoot.github.io/solucionesdigitales/" class="website-button" target="_blank">
+        Ir a mi página
+      </a>
+    </footer>
   </div>
 
   <script>
