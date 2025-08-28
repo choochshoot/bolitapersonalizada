@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kawaii Neon Brain Customizer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #181828;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    h1 {
+      font-weight: 300;
+      font-size: 2.2rem;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #ff6fff;
+      text-shadow: 0 0 10px #ff6fff, 0 0 20px #ff6fff;
+    }
+
+    .subtitle {
+      font-weight: 300;
+      opacity: 0.8;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      width: 100%;
+    }
+
+    .brain-container {
+      flex: 0 0 auto;
+      position: relative;
+    }
+
+    .neon-brain {
+      filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 30px #ff6fff);
+      width: 220px;
+      height: 220px;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .controls-panel {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      flex: 1;
+      min-width: 300px;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(255, 111, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .control-group {
+      margin-bottom: 20px;
+    }
+
+    .control-group h3 {
+      font-weight: 400;
+      margin-bottom: 15px;
+      color: #ffb3ff;
+      font-size: 1.2rem;
+    }
+
+    .color-presets {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .color-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+    }
+
+    .color-option.active {
+      border: 2px solid white;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ff6fff;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff6fff;
+    }
+
+    .value-display {
+      min-width: 40px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+
+    .reset-button {
+      background: transparent;
+      color: #ff6fff;
+      border: 1px solid #ff6fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      width: 100%;
+      letter-spacing: 1px;
+    }
+
+    .reset-button:hover {
+      background: rgba(255, 111, 255, 0.2);
+      box-shadow: 0 0 15px #ff6fff;
+    }
+
+    .glasses {
+      stroke: #fff;
+      stroke-width: 4;
+      filter: drop-shadow(0 0 6px #fff);
+    }
+
+    .brain-outline {
+      stroke: #ff6fff;
+      stroke-width: 6;
+      fill: #ffb3ff;
+      filter: drop-shadow(0 0 10px #ff6fff);
+    }
+
+    .face {
+      fill: none;
+      stroke: #222;
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    .cheek {
+      fill: #ff6fff;
+      opacity: 0.6;
+    }
+
+    .thought {
+      fill: #fff;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 8px #fff);
+      transition: transform 0.5s, opacity 0.5s;
+    }
+
+    @media (max-width: 650px) {
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .controls-panel {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Neon Brain Customizer</h1>
+      <p class="subtitle">Adjust the color and size of your kawaii neon brain</p>
+    </header>
+    
+    <div class="content">
+      <div class="brain-container">
+        <svg class="neon-brain" viewBox="0 0 200 200">
+          <!-- Brain shape -->
+          <ellipse class="brain-outline" cx="100" cy="100" rx="70" ry="60"/>
+          <!-- Brain squiggles -->
+          <path class="brain-outline" d="M60,100 Q70,80 100,90 Q130,100 140,80" fill="none"/>
+          <path class="brain-outline" d="M80,120 Q100,110 120,120" fill="none"/>
+          <!-- Glasses -->
+          <ellipse class="glasses" cx="75" cy="110" rx="22" ry="14"/>
+          <ellipse class="glasses" cx="125" cy="110" rx="22" ry="14"/>
+          <rect class="glasses" x="97" y="108" width="6" height="4" rx="2"/>
+          <!-- Eyes -->
+          <ellipse cx="75" cy="115" rx="3" ry="5" fill="#222"/>
+          <ellipse cx="125" cy="115" rx="3" ry="5" fill="#222"/>
+          <!-- Cheeks -->
+          <ellipse class="cheek" cx="65" cy="125" rx="6" ry="3"/>
+          <ellipse class="cheek" cx="135" cy="125" rx="6" ry="3"/>
+          <!-- Smile -->
+          <path class="face" d="M85,130 Q100,140 115,130"/>
+          <!-- Thought bubbles -->
+          <circle class="thought" id="thought1" cx="160" cy="60" r="7"/>
+          <circle class="thought" id="thought2" cx="175" cy="45" r="4"/>
+          <circle class="thought" id="thought3" cx="185" cy="35" r="2.5"/>
+        </svg>
+      </div>
+      
+      <div class="controls-panel">
+        <div class="control-group">
+          <h3>Brain Color</h3>
+          <div class="color-presets">
+            <div class="color-option active" style="background-color: #ff6fff;" data-color="#ff6fff"></div>
+            <div class="color-option" style="background-color: #6fff6f;" data-color="#6fff6f"></div>
+            <div class="color-option" style="background-color: #6f6fff;" data-color="#6f6fff"></div>
+            <div class="color-option" style="background-color: #ffbf6f;" data-color="#ffbf6f"></div>
+            <div class="color-option" style="background-color: #6fffff;" data-color="#6fffff"></div>
+            <div class="color-option" style="background-color: #ff6f6f;" data-color="#ff6f6f"></div>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="hue-slider" min="0" max="360" value="300">
+            <div class="value-display" id="hue-value">300°</div>
+          </div>
+        </div>
+        
+        <div class="control-group">
+          <h3>Brain Size</h3>
+          <div class="slider-container">
+            <input type="range" id="size-slider" min="100" max="300" step="10" value="220">
+            <div class="value-display" id="size-value">220px</div>
+          </div>
+        </div>
+        
+        <div class="control-group">
+          <h3>Glow Intensity</h3>
+          <div class="slider-container">
+            <input type="range" id="glow-slider" min="5" max="30" value="10">
+            <div class="value-display" id="glow-value">10px</div>
+          </div>
+        </div>
+        
+        <button class="reset-button" id="reset-button">Reset to Default</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const hueSlider = document.getElementById('hue-slider');
+    const hueValue = document.getElementById('hue-value');
+    const sizeSlider = document.getElementById('size-slider');
+    const sizeValue = document.getElementById('size-value');
+    const glowSlider = document.getElementById('glow-slider');
+    const glowValue = document.getElementById('glow-value');
+    const resetButton = document.getElementById('reset-button');
+    const colorOptions = document.querySelectorAll('.color-option');
+    const brainOutline = document.querySelectorAll('.brain-outline');
+    const cheeks = document.querySelectorAll('.cheek');
+    const neonBrain = document.querySelector('.neon-brain');
+
+    // Current settings
+    let currentHue = 300;
+    let currentSize = 220;
+    let currentGlow = 10;
+
+    // Animate thought bubbles
+    const bubbles = [
+      {el: document.getElementById('thought1'), base: 0},
+      {el: document.getElementById('thought2'), base: 0.3},
+      {el: document.getElementById('thought3'), base: 0.6}
+    ];
+
+    function animate() {
+      const t = Date.now() * 0.002;
+      bubbles.forEach((b, i) => {
+        const scale = 1 + 0.2 * Math.sin(t + b.base * Math.PI * 2);
+        b.el.setAttribute('transform', `scale(${scale})`);
+        b.el.style.opacity = 0.7 + 0.3 * Math.sin(t + b.base * Math.PI * 2);
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Update color based on hue
+    function updateColor(hue) {
+      const color = `hsl(${hue}, 100%, 70%)`;
+      const lightColor = `hsl(${hue}, 100%, 85%)`;
+      
+      // Update brain outline
+      brainOutline.forEach(el => {
+        el.style.stroke = color;
+        el.style.filter = `drop-shadow(0 0 ${currentGlow}px ${color})`;
+      });
+      
+      // Update brain fill
+      document.querySelectorAll('.brain-outline').forEach(el => {
+        if (el.tagName.toLowerCase() !== 'path') {
+          el.style.fill = lightColor;
+        }
+      });
+      
+      // Update cheeks
+      cheeks.forEach(el => {
+        el.style.fill = color;
+      });
+      
+      // Update global glow
+      neonBrain.style.filter = `drop-shadow(0 0 10px #fff) drop-shadow(0 0 ${currentGlow * 3}px ${color})`;
+      
+      // Update hue value display
+      hueValue.textContent = `${hue}°`;
+    }
+
+    // Update size
+    function updateSize(size) {
+      neonBrain.style.width = `${size}px`;
+      neonBrain.style.height = `${size}px`;
+      sizeValue.textContent = `${size}px`;
+    }
+
+    // Update glow
+    function updateGlow(glow) {
+      currentGlow = glow;
+      updateColor(currentHue);
+      glowValue.textContent = `${glow}px`;
+    }
+
+    // Reset to default
+    function resetToDefault() {
+      hueSlider.value = 300;
+      sizeSlider.value = 220;
+      glowSlider.value = 10;
+      
+      currentHue = 300;
+      currentSize = 220;
+      currentGlow = 10;
+      
+      updateColor(currentHue);
+      updateSize(currentSize);
+      updateGlow(currentGlow);
+      
+      // Reset active color option
+      colorOptions.forEach(option => {
+        option.classList.remove('active');
+        if (option.dataset.color === '#ff6fff') {
+          option.classList.add('active');
+        }
+      });
+    }
+
+    // Event listeners
+    hueSlider.addEventListener('input', () => {
+      currentHue = hueSlider.value;
+      updateColor(currentHue);
+      
+      // Update active color option
+      colorOptions.forEach(option => option.classList.remove('active'));
+    });
+
+    sizeSlider.addEventListener('input', () => {
+      currentSize = sizeSlider.value;
+      updateSize(currentSize);
+    });
+
+    glowSlider.addEventListener('input', () => {
+      currentGlow = glowSlider.value;
+      updateGlow(currentGlow);
+    });
+
+    resetButton.addEventListener('click', resetToDefault);
+
+    // Color preset selection
+    colorOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        colorOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        
+        // Convert hex to HSL for the slider
+        const hex = option.dataset.color;
+        const r = parseInt(hex.substring(1, 3), 16) / 255;
+        const g = parseInt(hex.substring(3, 5), 16) / 255;
+        const b = parseInt(hex.substring(5, 7), 16) / 255;
+        
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        
+        if (max === min) {
+          h = s = 0; // achromatic
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        
+        h = Math.round(h * 360);
+        currentHue = h;
+        hueSlider.value = h;
+        updateColor(h);
+      });
+    });
+
+    // Initialize
+    updateColor(currentHue);
+    updateSize(currentSize);
+    updateGlow(currentGlow);
+  </script>
+</body>
+</html>
